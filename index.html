@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#100627" />
+
+  <title>Thunderland Launcher</title>
+  <meta
+    name="description"
+    content="Descargá el launcher oficial de Thunderland."
+  />
+
+  <link rel="icon" type="image/png" href="thunderland-discord.png" />
+  <link rel="apple-touch-icon" href="thunderland-discord.png" />
+
+  <style>
+    :root {
+      --background: #090511;
+      --surface: rgba(25, 15, 49, 0.72);
+      --surface-border: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --purple: #6f31ff;
+      --purple-light: #9b72ff;
+      --yellow: #ffd238;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--background);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--text);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(111, 49, 255, 0.28), transparent 42%),
+        radial-gradient(circle at 10% 90%, rgba(88, 34, 211, 0.18), transparent 34%),
+        linear-gradient(145deg, #07030d 0%, #0d061b 48%, #080410 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      z-index: 0;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(110px);
+      pointer-events: none;
+      opacity: 0.28;
+    }
+
+    body::before {
+      top: -180px;
+      right: -110px;
+      background: var(--purple);
+    }
+
+    body::after {
+      bottom: -230px;
+      left: -130px;
+      background: #3e12ad;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: 40px 24px 24px;
+    }
+
+    .main {
+      display: grid;
+      place-items: center;
+    }
+
+    .content {
+      width: min(100%, 720px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 34px;
+      text-align: center;
+    }
+
+    .brand {
+      width: min(100%, 610px);
+      filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.35));
+      animation: brand-enter 700ms ease-out both;
+    }
+
+    .brand img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .download-card {
+      position: relative;
+      width: min(100%, 480px);
+      padding: 34px;
+      overflow: hidden;
+      border: 1px solid var(--surface-border);
+      border-radius: 28px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.09),
+          rgba(255, 255, 255, 0.035)
+        ),
+        var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      animation: card-enter 760ms 80ms ease-out both;
+    }
+
+    .download-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.34),
+        transparent 42%,
+        rgba(111, 49, 255, 0.42)
+      );
+      pointer-events: none;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .launcher-icon {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 23px;
+      background: rgba(255, 255, 255, 0.075);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 18px 40px rgba(0, 0, 0, 0.24);
+    }
+
+    .launcher-icon img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      border-radius: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+    }
+
+    .description {
+      max-width: 360px;
+      margin: 12px auto 26px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .download-button {
+      width: 100%;
+      min-height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 16px;
+      color: #16092f;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      text-decoration: none;
+      background:
+        linear-gradient(180deg, #ffe26f 0%, var(--yellow) 100%);
+      box-shadow:
+        0 14px 34px rgba(255, 210, 56, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        filter 180ms ease;
+    }
+
+    .download-button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+      box-shadow:
+        0 18px 42px rgba(255, 210, 56, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .download-button:active {
+      transform: translateY(0);
+    }
+
+    .download-button:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 4px;
+    }
+
+    .download-button svg {
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+    }
+
+    footer {
+      padding-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    footer a {
+      color: #ffffff;
+      font-weight: 700;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(155, 114, 255, 0.7);
+      transition: color 180ms ease;
+    }
+
+    footer a:hover {
+      color: var(--purple-light);
+    }
+
+    @keyframes brand-enter {
+      from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes card-enter {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 28px 18px 20px;
+      }
+
+      .content {
+        gap: 26px;
+      }
+
+      .download-card {
+        padding: 28px 22px 24px;
+        border-radius: 24px;
+      }
+
+      .brand {
+        width: min(100%, 470px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <main class="main">
+      <section class="content" aria-labelledby="launcher-title">
+        <div class="brand">
+          <img
+            src="thunderland-logo.png"
+            alt="Thunderland"
+            width="1280"
+            height="250"
+          />
+        </div>
+
+        <div class="download-card">
+          <div class="launcher-icon" aria-hidden="true">
+            <img src="thunderland-discord.png" alt="" />
+          </div>
+
+          <h1 id="launcher-title">Launcher oficial</h1>
+
+          <p class="description">
+            Descargá el launcher de Thunderland y accedé a todos nuestros
+            servidores desde un solo lugar.
+          </p>
+
+          <a
+            class="download-button"
+            href="thunderland-setup.exe"
+            download="thunderland-setup.exe"
+            aria-label="Descargar launcher de Thunderland para Windows"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M5 21h14"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Descargar launcher
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      ¿Consultas? Unite a
+      <a
+        href="https://discord.thunderland.club"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Discord</a>
+    </footer>
+  </div>
+</body>
+</html>
